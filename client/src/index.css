@@ -1,18 +1,30 @@
 body {
-    margin: 0;
     padding: 0;
     background-color: rgb(252, 229, 154);
     display: flex;
     justify-content: center;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    animation-name: animaton;
+    animation-duration: 2s;
+
+}
+
+@keyframes animaton {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 100%;
+    }
 }
 
 .app {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(255, 252, 252);
     box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px, rgb(252, 229, 154) 0 0 0 1px;
     border-radius: 10px;
     padding: 10px;
-    width: 800px;
+    max-width: 800px;
     margin-top: 50px;
 }
 
@@ -20,6 +32,17 @@ body {
 .info-container {
     display: flex;
     align-items: center;
+}
+
+@media (max-width:1000px) {
+
+    .button-container,
+    .info-container {
+        display: flex;
+        align-items: center;
+        max-width: 200px;
+    }
+
 }
 
 .button-container button {
@@ -201,12 +224,13 @@ input {
     margin: 5px;
 }
 
+
 .auth-container-box {
     width: 500px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px, rgb(252, 229, 154) 0 0 0 1px;
-
+    background-color: rgb(201, 143, 255);
 }
 
 .auth-container-box form {
@@ -227,6 +251,12 @@ input {
     color: rgb(108, 115, 148);
 }
 
+.auth-container-box form h2 {
+
+    color: white;
+
+}
+
 .copyright {
     font-size: 13px;
     margin: 10px;
@@ -240,6 +270,8 @@ input {
     color: rgb(114, 114, 114);
 }
 
+
+/* task */
 .outer-bar {
     width: 200px;
     height: 14px;
@@ -261,3 +293,96 @@ input {
     margin: 10px;
     color: rgb(108, 115, 148)
 }
+
+
+
+
+
+/* media */
+
+@media (max-width:915px) {
+    .tick {
+        margin-top: 5px;
+        padding: 0;
+    }
+
+    .auth-container {
+        max-width: 300px;
+    }
+
+    .list-header {
+        display: block;
+    }
+
+    .list-item {
+        display: block;
+        padding-bottom: 10px;
+        padding-left: 10px;
+    }
+
+    .info-container {
+        display: block;
+        align-items: center;
+    }
+
+    .button-container {
+        margin: 10px 0;
+    }
+
+    .outer-bar {
+        width: 200%;
+    }
+
+    .task-title {
+        margin-top: 0;
+    }
+
+    .task-date {
+        margin-left: 0;
+    }
+}
+
+@media (max-width:414px) {
+    .outer-bar {
+        width: 180%;
+    }
+    .user-email{
+        float: left;
+    }
+}
+
+@media (max-width:393px) {
+  
+    .outer-bar {
+        width: 170%;
+    }
+    
+}
+@media (max-width:375px) {
+  
+    .outer-bar {
+        width: 320px;
+    } 
+}
+@media (max-width:360px) {
+  
+    .outer-bar {
+        width: 300px;
+    }  
+}
+@media (max-width:280px) {
+    .task-title {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    .auth-container {
+        max-width: 260px;
+    }
+    .outer-bar {
+        width: 110%;
+    }
+    .user-email{
+        float: left;
+    }
+}
+
