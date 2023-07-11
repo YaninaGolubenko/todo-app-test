@@ -13,6 +13,7 @@ const App = () => {
   const [tasks, setTasks] = useState(null)
   const [filteredTasks, setFilteredTasks] = useState([])
 
+
   const getData = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVERURL}/todos/${userEmail}`)
@@ -34,21 +35,24 @@ const App = () => {
   //Sort by date
   const sortedTasks = tasks?.sort((a, b) => new Date(b.date) - new Date(a.date))
 
-  // filterToDos 
+  // filterTasks 
   function filterTasks(e) {
     const searchValue = e.currentTarget.value.trim().toLowerCase()
-    const result = tasks?.filter(task => task.title.toLowerCase().includes(searchValue))
+    const result = tasks.filter(task => task.title.toLowerCase().includes(searchValue))
     setFilteredTasks(result)
   }
 
   return (
     <div className="app">
       {!authToken && <Auth />}
-      {authToken && <>
+      {authToken && 
+      <>
         <ListHeader listName={'😀 My to-do list'} getData={getData} />
         <p className='user-email'>Welcome back {userEmail}</p>
-        <input placeholder='Search' onKeyUp={filterTasks}></input>
-
+        <input
+          placeholder={'Search'}
+          onKeyUp={filterTasks}
+        />
         {
           filteredTasks.length ? filteredTasks.map((task) => <ListItem key={task.id} task={task} getData={getData} />) : sortedTasks?.map((task) => <ListItem key={task.id} task={task} getData={getData} />)
         }
@@ -60,3 +64,4 @@ const App = () => {
 
 
 export default App
+
