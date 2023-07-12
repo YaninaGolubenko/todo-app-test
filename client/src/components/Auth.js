@@ -16,16 +16,23 @@ const Auth = () => {
 
   const handleSubmit = async (e, endpoint) => {
     e.preventDefault()
+
+    const re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i
+   
+
     if (!isLogIn && password !== confirmPassword) {
       setError('Make sure passwords match!')
       return
     } else if (!email) {
       setError('Please enter your email')
       return
-    } else if (!password) {
+    } else if (!re.test(email)) {
+      setError('Please enter correct email')
+      return
+    }else if (!password) {
       setError('Please enter your password')
       return
-    } else {
+    }  else {
       const response = await fetch(`${process.env.REACT_APP_SERVERURL}/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -52,6 +59,7 @@ const Auth = () => {
           <input
             autoComplete='true'
             required
+            aria-required
             type='email'
             placeholder='email'
             onChange={(e) => setEmail(e.target.value)}
