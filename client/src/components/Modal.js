@@ -5,36 +5,44 @@ import { useCookies } from 'react-cookie'
 const Modal = ({ mode, setShowModal, getData, task }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
   const editMode = mode === 'edit' ? true : false
+  const [error, setError] = useState(null)
+
 
   const [data, setData] = useState({
     user_email: editMode ? task.user_email : cookies.Email,
-    title: editMode ? task.title : null,
+    title: editMode ? task.title : '',
     progress: editMode ? task.progress : 50,
-    date: editMode ? task.date : new Date()
+    date: editMode  ? task.date : new Date()
   })
 
   const postData = async (e) => {
-    e.preventDefault()
-    try {
-      const response = await fetch(`${process.env.REACT_APP_SERVERURL}/todos`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-
-      if (response.status === 200) {
-        console.log('worked')
-        setShowModal(false)
-        getData()
-      }
-    } catch (err) {
-      console.error(err)
-    }
+      e.preventDefault()
+      if(data.title.length){
+     try {
+        const response = await fetch(`${process.env.REACT_APP_SERVERURL}/todos`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+  
+        if (response.status === 200) {
+          console.log('worked')
+          setShowModal(false)
+          getData()
+        }
+      } catch (err) {
+        console.error(err)
+      } 
+    }else{
+      setError('Please enter your task')
+      return
+    }  
   }
 
 
   const editData = async (e) => {
     e.preventDefault()
+    if(data.title.length){
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVERURL}/todos/${task.id}`, {
         method: 'PUT',
@@ -47,6 +55,9 @@ const Modal = ({ mode, setShowModal, getData, task }) => {
       }
     } catch (err) {
       console.error(err)
+    }}else{
+      setError('Please enter your task')
+      return
     }
   }
   
@@ -60,9 +71,8 @@ const Modal = ({ mode, setShowModal, getData, task }) => {
     }))
 
     data.date = new Date()
-   
-
   }
+  
   return (
     <div className='overlay'>
       <div className='modal'>
@@ -77,7 +87,7 @@ const Modal = ({ mode, setShowModal, getData, task }) => {
             maxLength={30}
             placeholder=' Your task goes here'
             name='title'
-            value={data.title}
+            value={data.title || ""}
             onChange={handleChange}
           />
           <br />
@@ -92,7 +102,11 @@ const Modal = ({ mode, setShowModal, getData, task }) => {
             value={data.progress}
             onChange={handleChange}
           />
-          <input className={mode} type='submit' onClick={editMode ? editData : postData} />
+          {error && <p>{error}</p>}
+          <input 
+          className={mode} 
+          type='submit' 
+          onClick={ editMode ? editData : postData} />
         </form>
 
       </div>
