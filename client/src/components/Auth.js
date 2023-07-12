@@ -1,5 +1,5 @@
-import { useState} from 'react'
-import {useCookies} from 'react-cookie'
+import { useState } from 'react'
+import { useCookies } from 'react-cookie'
 const Auth = () => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
   const [isLogIn, setIsLogin] = useState(true)
@@ -8,39 +8,40 @@ const Auth = () => {
   const [confirmPassword, setConfirmPassword] = useState(null)
   const [error, setError] = useState(null)
 
-  console.log(cookies)
 
   const viewLogin = (status) => {
     setError(null)
     setIsLogin(status)
   }
 
+  const handleSubmit = async (e, endpoint) => {
+    e.preventDefault()
+    if (!isLogIn && password !== confirmPassword) {
+      setError('Make sure passwords match!')
+      return
+    } else if (!email) {
+      setError('Please enter your email')
+      return
+    } else if (!password) {
+      setError('Please enter your password')
+      return
+    } else {
+      const response = await fetch(`${process.env.REACT_APP_SERVERURL}/${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
 
-const handleSubmit = async (e, endpoint)=>{
-e.preventDefault()
-if(!isLogIn && password !== confirmPassword){
-setError('Make sure passwords match!')
-return
-}
-
-const response = await fetch(`${process.env.REACT_APP_SERVERURL}/${endpoint}`, {
-  method: 'POST',
-  headers: {'Content-Type' : 'application/json'},
-  body: JSON.stringify({ email, password})
-})
-
-const data = await response.json()
-if(data.detail){
-  setError(data.detail)
-}else{
-  setCookie('Email', data.email)
-  setCookie('AuthToken', data.token) 
-
-
-  window.location.reload()
-}
-
-}
+      const data = await response.json()
+      if (data.detail) {
+        setError(data.detail)
+      } else {
+        setCookie('Email', data.email)
+        setCookie('AuthToken', data.token)
+        window.location.reload()
+      }
+    }
+  }
 
   return (
     <div className='auth-container'>
@@ -48,37 +49,45 @@ if(data.detail){
         <form>
           <h2>{isLogIn ? 'Please log in' : 'Please sign up!'}</h2>
 
-          <input type='email' 
-          placeholder='email' 
-          onChange={(e)=>setEmail(e.target.value)}
+          <input
+            autoComplete='true'
+            required
+            type='email'
+            placeholder='email'
+            pattern='/^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i'
+            onChange={(e) => setEmail(e.target.value)}
           />
 
-          <input 
-          type='password' 
-          placeholder='password' 
-          onChange={(e)=>setPassword(e.target.value)}
+          <input
+            required
+            autoComplete='true'
+            type='password'
+            placeholder='password'
+            onChange={(e) => setPassword(e.target.value)}
           />
 
-          {!isLogIn && <input 
-          type='password' 
-          placeholder='confirm password'
-          onChange={(e)=>setConfirmPassword(e.target.value)} 
+          {!isLogIn && <input
+            autoComplete='true'
+            required
+            type='password'
+            placeholder='confirm password'
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />}
 
 
-          <input type='submit' className='create' onClick={(e) => handleSubmit(e, isLogIn ? 'login' : 'signup')}/>
+          <input type='submit' className='create' onClick={(e) => handleSubmit(e, isLogIn ? 'login' : 'signup')} />
           {error && <p>{error}</p>}
         </form>
         <div className='auth-options'>
-          <button 
-          onClick={() => viewLogin(false)}
-          style={
-            {backgroundColor : !isLogIn ? 'rgb(255, 255, 255)' : 'rgb(182, 223, 186)'}
-           }
+          <button
+            onClick={() => viewLogin(false)}
+            style={
+              { backgroundColor: !isLogIn ? 'rgb(255, 255, 255)' : 'rgb(182, 223, 186)' }
+            }
           >Sign Up</button>
-          <button 
-          onClick={() => viewLogin(true)}
-          style={{backgroundColor : isLogIn ? 'rgb(255, 255, 255)'   : 'rgb(182, 223, 186)'}} 
+          <button
+            onClick={() => viewLogin(true)}
+            style={{ backgroundColor: isLogIn ? 'rgb(255, 255, 255)' : 'rgb(182, 223, 186)' }}
           >Login</button>
         </div>
 
