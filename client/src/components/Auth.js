@@ -54,7 +54,6 @@ const Auth = () => {
             required
             type='email'
             placeholder='email'
-            pattern='/^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i'
             onChange={(e) => setEmail(e.target.value)}
           />
 
