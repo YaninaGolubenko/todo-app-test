@@ -32,6 +32,7 @@ body {
 .info-container {
     display: flex;
     align-items: center;
+    overflow: hidden;
 }
 
 @media (max-width:1000px) {
@@ -273,7 +274,7 @@ input {
 
 /* task */
 .outer-bar {
-    width: 200px;
+    width: 100%;
     height: 14px;
     background-color: rgb(216, 216, 216);
     border-radius: 7px;
@@ -328,11 +329,6 @@ input {
     .button-container {
         margin: 10px 0;
     }
-
-    .outer-bar {
-        width: 200%;
-    }
-
     .task-title {
         margin-top: 0;
     }
@@ -343,49 +339,18 @@ input {
 }
 
 @media (max-width:414px) {
-    .outer-bar {
-        width: 180%;
-    }
     .user-email{
         float: left;
     }
 }
 
-@media (max-width:393px) {
-  
-    .outer-bar {
-        width: 170%;
-    }
-    
-}
-@media (max-width:375px) {
-  
-    .outer-bar {
-        width: 320px;
-    } 
-}
-@media (max-width:360px) {
-  
-    .outer-bar {
-        width: 300px;
-    }  
-}
-@media (max-width:320px) {
-  
-    .outer-bar {
-        width: 270px;
-    }  
-}
 @media (max-width:280px) {
     .task-title {
         max-width: 100%;
         overflow: hidden;
     }
     .auth-container {
-        max-width: 260px;
-    }
-    .outer-bar {
-        width: 110%;
+        width: 260px;
     }
     .user-email{
         float: left;
